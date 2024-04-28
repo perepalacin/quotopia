@@ -36,7 +36,8 @@ const page = async ({searchParams, params}: QuotePageProps) => {
     });
 
     if (searchParams.relatedContent === "true") {
-      await axios.get(`http://localhost:3000/api/feed`)
+      console.log(quote.author);
+      await axios.get(`http://localhost:3000/api/author/authorquotes/${quote.author}`)
     .then((response) => {
       relatedContent = response.data;
     })
