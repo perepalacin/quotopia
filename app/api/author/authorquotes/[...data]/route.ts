@@ -3,24 +3,25 @@ import Quote from "@/types/mongoModels";
 
 export async function GET (
     _req: Request,
-    { params }: { params: { author: string } }
+    { params }: { params: { data: string[] } }
   ) {
     try {
         await connectToDB();
 
-        const author = params.author;
+        const author = params.data[0];
+        const id = params.data[1];
         if (!author) return new Response("Author name is missing.", {status: 400});
-        const quote = await Quote.find(
+        const quotes = await Quote.find(
             {
                 $and: [
-                    {_id: {$ne: "662e3a49c09e91a3fdd81282"}},
+                    {_id: {$ne: id}},
                     {author: author}
                 ]
             }
         );
-        if (!quote) return new Response("Quote Not Found", { status: 404 });
+        if (quotes.length === 0) return new Response("Failed to fetch realted quotes", { status: 404 });
 
-        return new Response(JSON.stringify(quote), { status: 200 })
+        return new Response(JSON.stringify(quotes), { status: 200 })
 
     } catch (error) {
         return new Response("Internal Server Error", { status: 500 });

@@ -12,14 +12,25 @@ interface RootPageProps {
 
 const page = async ({searchParams}: RootPageProps) => {
   var quotes: QuoteProps[] = [];
-  await axios.get("http://localhost:3000/api/feed")
+  if (searchParams.category && searchParams.query) {
+    await axios.get(`http://localhost:3000/api/feed/${searchParams.query}/${searchParams.category}
+    `)
     .then((response) => {
       quotes = response.data;
     })
     .catch((error) => {
       console.log("Error failed to fetch feed data:" + error);
     });
-
+  } else {
+    await axios.get(`http://localhost:3000//api/feed/`)
+    .then((response) => {
+      quotes = response.data;
+    })
+    .catch((error) => {
+      console.log("Error failed to fetch feed data:" + error);
+    });
+  }
+    
   return (
     <div className="z-20 pb-10">
       {/* Landing Banner */}

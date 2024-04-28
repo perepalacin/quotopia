@@ -1,5 +1,6 @@
 import { QuoteProps } from "@/types/types_d";
 import { Bookmark } from "lucide-react";
+import Link from "next/link";
 
 interface QuoteItemProps {
     quote: QuoteProps;
@@ -29,7 +30,9 @@ const HeroQuoteItem: React.FC<QuoteItemProps> = ({
                         <h1 className='font-bold text-2xl'>{quote.author}</h1>
                         <div className='flex flex-row gap-2'>
                             {quote.topics.map((item) => (
-                            <p className='text-sm text-neutral-400 dark:text-neutral-400' key={item.length}>#{item}</p>
+                                <Link href = {`/?category=Topics&query=${item}`}>
+                                    <p className='text-sm text-neutral-400 dark:text-neutral-400' key={item.length}>#{item}</p>
+                                </Link>
                             ))}
                         </div>
                     </div>

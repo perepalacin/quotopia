@@ -27,24 +27,25 @@ const SearchBar = () => {
         if (categoryName) {
           setSearchCategory(categoryName);
           params.set("category", categoryName);
+          if (query) {
+            router.replace(`${pathname}?${params.toString()}`);
+          }
         }
-        router.replace(`${pathname}?${params.toString()}`);
-    }
+      }
 
 
     useEffect(() => {
-        const query = {
-            query: debouncedValue,
-            category: category,
-        };
 
         const params = new URLSearchParams(searchParams);
 
         if (debouncedValue) {
             params.set("query", debouncedValue);
+            params.set("category", searchCategory);
         } else {
             params.delete("query");
+            params.delete("category");
         }
+
 
         router.replace(`${pathname}?${params.toString()}`)
 

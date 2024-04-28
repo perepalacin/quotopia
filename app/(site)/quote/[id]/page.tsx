@@ -37,7 +37,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
 
     if (searchParams.relatedContent === "true") {
       console.log(quote.author);
-      await axios.get(`http://localhost:3000/api/author/authorquotes/${quote.author}`)
+      await axios.get(`http://localhost:3000/api/author/authorquotes/${quote.author}/${quote._id}`)
     .then((response) => {
       relatedContent = response.data;
     })
@@ -53,7 +53,12 @@ const page = async ({searchParams, params}: QuotePageProps) => {
       <ShowMoreButton author={quote.author}/>
       :
       <div className="flex flex-col gap-2">
-        <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>
+        {
+          searchParams.relatedContent === "true" ?
+          <></>
+          :
+          <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>
+        }
         <Separator />
         <PageContent quotes={relatedContent} />
       </div>
