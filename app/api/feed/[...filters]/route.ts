@@ -17,17 +17,17 @@ export async function GET (
             case "Contents":
                 quotes = await Quote.find({
                     quote: {"$regex": query, "$options": "i"}
-                });    
+                }).sort({lastedit: 'desc'});    
                 break;
         
             case "Author":
                 quotes = await Quote.find({
                     author: {"$regex": query, "$options": "i"}
-                });   
+                }).sort({author: 'asc'});   
                 break;
 
             case "Topics":
-                quotes = await Quote.find({ topics: query });
+                quotes = await Quote.find({ topics: query }).sort({lastedit: 'desc'});
                 break;
         
             default: //else

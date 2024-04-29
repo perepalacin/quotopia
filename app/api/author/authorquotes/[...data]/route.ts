@@ -18,7 +18,7 @@ export async function GET (
                     {author: author}
                 ]
             }
-        );
+        ).sort({lastedit: 'desc'});
         if (quotes.length === 0) return new Response("Failed to fetch realted quotes", { status: 404 });
 
         return new Response(JSON.stringify(quotes), { status: 200 })

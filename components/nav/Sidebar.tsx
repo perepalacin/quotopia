@@ -7,6 +7,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavMenu from "./NavMenu";
 import { ModeToggle } from "../ui/DarkModeToggle";
+import ButtonSignIn from "../auth/ButtonSignIn";
+import ButtonSignUp from "../auth/ButtonSignUp";
 
 
 
@@ -39,6 +41,8 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-row gap-2 items-end">
                 <ModeToggle />
+                <ButtonSignIn />
+                <ButtonSignUp />
                 {/* {user ? 
                 <div className="flex flex-row gap-2">
                     <Button className="dark:bg-indigo-600 bg-indigo-500 text-white hover:bg-indigo-600 dark:hover:bg-indigo-700" variant="secondary" onClick={handleClick}>
