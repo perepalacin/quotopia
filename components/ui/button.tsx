@@ -17,6 +17,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        clorse: "hover:bg-indigo-700 hover:dark:bg-indigo-1000 rounded-full",
         link: "text-primary underline-offset-4 hover:underline",
         mainaccent: "bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 active:bg-indigo-800"
       },
@@ -25,6 +26,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        clorse: "h-6 w-6",
       },
     },
     defaultVariants: {
