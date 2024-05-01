@@ -61,8 +61,13 @@ const UploadQuoteForm = () => {
     const deleteTopic = (index: number) => {
         console.log("Delete");
         console.log(index);
-        const topicsArray = topics;
+        //We avoid mutatting the state by adding the spread operator in front
+        const topicsArray = [...topics];        
         topicsArray.splice(index, 1);
+        topicsArray.forEach((item, i) => {
+            item[1] = i;
+        });
+        console.log(topicsArray);
         setTopics(topicsArray);
         return null;
     }
@@ -118,7 +123,7 @@ const UploadQuoteForm = () => {
             <div className="flex flex-row gap-2">
                 {topics.map((item) => {
                     return (
-                        <div key={item[1]} className="flex flex-row gap-1 items-center pl-4 pr-3 py-1 bg-indigo-500 dark:bg-indigo-900 rounded-2xl border border-indigo-900 dark:border-indigo-600">
+                        <div key={item[1]} className="flex flex-row gap-1 items-center pl-4 pr-3 py-1 bg-gradient-to-bl from-indigo-400 to-indigo-600 dark:from-indigo-600 dark:to-indigo-900 rounded-2xl border border-indigo-900 dark:border-indigo-600">
                             <p className="italic">
                                 #{item[0]}
                             </p>
