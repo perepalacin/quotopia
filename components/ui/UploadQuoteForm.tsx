@@ -5,9 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Button } from "./button";
-import { PlusIcon, XIcon } from "lucide-react";
+import { Loader2Icon, PlusIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -20,6 +21,9 @@ const UploadQuoteForm = () => {
 
     const [topics, setTopics ] = useState<Array<[string, number]>>([]);
     const [topicInput, setTopicInput] = useState<string>("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -29,9 +33,55 @@ const UploadQuoteForm = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("Values");
-        //API call goes here;
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
+        const requestedTopics = [];
+        for (let i = 0; i < topics.length; i++ ) {
+            requestedTopics.push(topics[i][0]);
+        }
+        const data = {
+            quote: values.quote,
+            author: values.author,
+            topics: requestedTopics,
+        };
+        try {
+            fetch('/api/new', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log(data);
+                toast.success("Quote uploaded succesfully", {id: "succesfullUpload"});
+                router.push(`/quote/${data._id}`);
+              })
+              .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+              });
+              //We create the edit call too
+            // } else {
+            //   await axios.post(`/api/recipe`, formData, {
+            //     headers: {
+            //       "Content-Type": "multipart/form-data",
+            //     },
+            //     data: formData,
+            //   });
+            // }
+          } catch (error) {
+            toast.error("Something went wrong, please try again later", {
+              id: "quoteUpdateError",
+            });
+            setIsLoading(false);
+            return null;
+          }
     }
 
     const handleTopicInputChange = (e: string) => {
@@ -46,7 +96,6 @@ const UploadQuoteForm = () => {
         }
         if (topics.length === 0) {
             setTopics([[topicInput, 0]])
-            console.log([topicInput, 0]);
         } else {
             const topicsArray = topics;
             topics.push([topicInput, topics.length]);
@@ -73,14 +122,14 @@ const UploadQuoteForm = () => {
     }
 
   return (
-    <div className='group w-full sm:w-2/3 break-inside-avoid-column h-auto max-w-full relative flex flex-col px-5 py-5 border rounded-md shadow-md bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-4 z-1'>
+    <div className='group w-full sm:w-2/3 break-inside-avoid-column h-auto max-w-full relative flex flex-col px-5 py-5 border rounded-md shadow-md bg-white dark:bg-neutral-900 mt-4 z-1'>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <FormField
             control={form.control}
             name={"author"}
             render={({ field })=> (
-                <FormItem className="flex flex-row gap-2 items-center">
+                <FormItem className="flex flex-col gap-2 items-center">
                 <FormLabel className="hidden">Author name:</FormLabel>
                 <FormControl>
                     <input 
@@ -94,7 +143,7 @@ const UploadQuoteForm = () => {
                 {/* <FormDescription>
                     This is your public display name.
                 </FormDescription> */}
-                <FormMessage />
+                <FormMessage className="text-[red]"/>
                 </FormItem>
             )}
             />
@@ -102,7 +151,7 @@ const UploadQuoteForm = () => {
             control={form.control}
             name={"quote"}
             render={({ field })=> (
-                <FormItem className="flex flex-row gap-2 items-center">
+                <FormItem className="flex flex-col gap-2 items-center">
                 <FormLabel className="hidden">Quote text:</FormLabel>
                 <FormControl>
                     <textarea 
@@ -116,7 +165,7 @@ const UploadQuoteForm = () => {
                 {/* <FormDescription>
                     This is your public display name.
                 </FormDescription> */}
-                <FormMessage />
+                <FormMessage className="text-[red]"/>
                 </FormItem>
             )}
             />
@@ -148,8 +197,12 @@ const UploadQuoteForm = () => {
             </Button>
             </div>
             <div className="w-full flex flex-row justify-end mt-2">
-                <Button type="submit" variant={"mainaccent"} className="w-44">
-                    Post
+                <Button type="submit" variant={"mainaccent"} className="w-44" disabled={isLoading}>
+                    {isLoading ? (
+                        <Loader2Icon className="animate-spin w-4 h-4" />
+                    ) :
+                    <p>Post</p>
+                    }
                 </Button>
             </div>
             </form>

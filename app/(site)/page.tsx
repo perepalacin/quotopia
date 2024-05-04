@@ -1,7 +1,9 @@
+import { ContentSkeleton } from "@/components/ui/ContentSkeleton";
 import PageContent from "@/components/ui/PageContent";
 import SearchBar from "@/components/ui/SearchBar";
 import { QuoteProps } from "@/types/types_d";
 import axios from "axios";
+import { Suspense } from "react";
 
 interface RootPageProps {
     searchParams: {
@@ -52,7 +54,9 @@ const page = async ({searchParams}: RootPageProps) => {
       </div>
       {/* Landing Banner END*/}
       <SearchBar />
-      <PageContent quotes={quotes}/>
+      <Suspense fallback={<ContentSkeleton />}>
+        <PageContent quotes={quotes}/>
+      </Suspense>
     </div>
   );
 };

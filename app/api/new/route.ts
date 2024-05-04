@@ -1,32 +1,54 @@
 import { connectToDB } from "@/lib/utils/mongoConnect";
 import Quote from "@/types/mongoModels";
-import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
+import { isArrayOfStrings, isString } from "@/lib/utils/TypeChecker";
 
-export const POST = async (_req: NextRequest, _res: NextResponse) => {
-    // const {
-    //     creator,
-    //     author,
-    //     favs,
-    //     lastedit,
-    //     quote,
-    //     topics
-    // } = await req.json(); 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-    try {
-        await connectToDB();
-        const newQuote = new Quote({
-            creator: '1234',
-            author: 'Marcus Aurelius',
-            favs: 0,
-            lastedit: new Date(),
-            quote: "Trust no one please",
-            topics: ["Glory", "Fame"],
-        });
+export async function POST(req: NextRequest) {
+  //We get the data!
+  const { userId } = getAuth(req);
+  const data = await req.json();
+  if (!data) {
+    return new Response("Missing request data", { status: 400 });
+  }
+  const quote = String(data.quote);
+  const author = String(data.author);
+  const topics = data.topics;
+  
+  if (!isString(quote)) {
+    return new Response("Improperly formated quote data", { status: 400 });
+  }
+  if (!isString(author)) {
+    return new Response("Improperly formated author name", { status: 400 });
+  }
+  if (!isArrayOfStrings(topics)) {
+    return new Response("Improperly formated topics", { status: 400 });
+  }
+  if (!userId) {
+    return new Response("Unauthorized user", { status: 401 });
+  }
 
-        await newQuote.save();
+  try {
+    await connectToDB();
+    const newQuote = new Quote({
+      creator: userId,
+      author: author,
+      favs: 0,
+      lastedit: new Date(),
+      quote: quote,
+      topics: topics,
+    });
 
-        return new Response(JSON.stringify(newQuote), {status: 200});
-    }catch (error) {
-        return new Response("Failed to upload the quote", {status: 500});
-    }
+    await newQuote.save();
+
+    return new Response(JSON.stringify(newQuote), { status: 200 });
+  } catch (error) {
+    return new Response("Failed to upload the quote", { status: 500 });
+  }
 }

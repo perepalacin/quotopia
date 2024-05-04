@@ -1,21 +1,9 @@
 import {
-    Cloud,
-    CreditCard,
-    Github,
-    Keyboard,
-    LifeBuoy,
+    Bookmark,
     LogOut,
-    Mail,
-    Menu,
-    MessageSquare,
-    Plus,
-    PlusCircle,
-    Settings,
     User,
-    UserPlus,
-    Users,
+    UserRound,
   } from "lucide-react"
-   
   import { Button } from "@/components/ui/button"
   import {
     DropdownMenu,
@@ -25,33 +13,37 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
+import { LogoutButton } from "../ui/LogoutButton"
    
-  interface NavMenuProps {
-    onIncrement: () => void,
-  }
 
-  const NavMenu: React.FC<NavMenuProps> = ({
-    onIncrement
-  }) => {
+
+  const NavMenu = () => {
+
+
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex flex-row gap-1.5">
-            <Menu size={16}/>
-            Menu
+          <Button variant="secondary" size= "icon" className="flex flex-row gap-1.5 rounded-full">
+            <UserRound />
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
             <Link href="/profile">
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
             </Link>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={onIncrement}>
-            <LogOut className="mr-2 h-4 w-4"/>
-            <span>Log out</span>
+            <Link href="/saved">
+              <DropdownMenuItem className="cursor-pointer">
+                <Bookmark className="mr-2 h-4 w-4" />
+                <span>Saved</span>
+              </DropdownMenuItem>
+            </Link>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <LogoutButton />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -39,13 +39,13 @@ const Sidebar = () => {
             <div className="flex flex-row gap-2 items-end">
                 <ModeToggle />
                 {userId ? 
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 justify-center">
                     <Link href={"/create"}>
-                        <Button>
+                        <Button variant={"mainaccent"}>
                             Post a new quote
                         </Button>
                     </Link>
-                    {/* <NavMenu /> */}
+                    <NavMenu />
                 </div>
                 :
                 <div className="flex flex-row gap-2">
@@ -53,24 +53,6 @@ const Sidebar = () => {
                     <ButtonSignUp />
                 </div>
                 }
-                {/* {user ? 
-                <div className="flex flex-row gap-2">
-                    <Button className="dark:bg-indigo-600 bg-indigo-500 text-white hover:bg-indigo-600 dark:hover:bg-indigo-700" variant="secondary" onClick={handleClick}>
-                        Create a new entry
-                    </Button>
-                    <NavMenu 
-                    onIncrement={handleLogout}/>
-                </div>
-                : 
-                <div className="flex flex-row gap-2">
-                    <Button variant="outline" onClick={authModal.onOpen}>
-                        Sign In
-                    </Button>
-                    <Button className="dark:bg-indigo-600 bg-indigo-500 text-white" onClick={authModal.onOpen}>
-                        Sign Up
-                    </Button>
-                </div>
-                } */}
             </div>
             </div>
         </div>

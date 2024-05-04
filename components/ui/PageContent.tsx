@@ -1,5 +1,7 @@
 import { QuoteProps } from "@/types/types_d";
 import QuoteItem from "./QuoteItem";
+import Image from "next/image";
+import { ContentSkeleton } from "./ContentSkeleton";
 
 
 interface PageContentProps {
@@ -12,17 +14,13 @@ const PageContent = ({quotes}: PageContentProps) => {
 
   console.log(quotes);
 
-  // const {user} = useUser();
-  // if (fragment.length !== 0) {
-  //   for (const i in fragment) {
-  //     if (Number(fragment[i].id) == herocard) {
-  //       fragment = fragment.splice(i, 1);
-  //     }
-  //   }
-
   if (quotes.length === 0) {
     return (
-      <p>Sorry we couldn't find what you were looking for!</p>
+      <div className="flex flex-col gap-2 items-center mt-5">
+        <Image src={"/images/EmptyLight.png"} width={250} height={250} alt="Image of a thinker" className="dark:hidden w-44"/>
+        <Image src={"/images/EmptyDark.png"} width={250} height={250} alt="Image of a thinker" className="hidden dark:block w-44"/>
+        <p className="font-bold text-2xl text-center">Sorry we couldn't find what you were looking for!</p>
+      </div>
     )
   }
   return (

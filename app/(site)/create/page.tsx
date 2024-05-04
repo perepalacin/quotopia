@@ -13,7 +13,7 @@ const page = () => {
 
     return (
     <div className='flex flex-col gap-2 items-center'>
-        <p className='text-4xl font-semibold'>Uploard your own <span className='font-bold text-indigo-500'>quote</span></p>
+        <p className='text-4xl font-semibold'>Upload your own <span className='font-bold text-indigo-500'>quote</span></p>
         <UploadQuoteForm />
     </div>
   )
