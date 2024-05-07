@@ -7,3 +7,9 @@ export interface QuoteProps {
     lastedit: Date;
     favs: Number
 }
+
+export enum QuotesPath {
+    feed = "feed",
+    profile = "profile",
+    saved = "saved"
+}

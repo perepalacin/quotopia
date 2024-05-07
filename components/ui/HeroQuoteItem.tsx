@@ -30,8 +30,8 @@ const HeroQuoteItem: React.FC<QuoteItemProps> = ({
                         <h1 className='font-bold text-2xl'>{quote.author}</h1>
                         <div className='flex flex-row gap-2'>
                             {quote.topics.map((item) => (
-                                <Link href = {`/?category=Topics&query=${item}`}>
-                                    <p className='text-sm text-neutral-400 dark:text-neutral-400' key={item.length}>#{item}</p>
+                                <Link href = {`/?category=Topics&query=${item}`} className="">
+                                    <p className='text-sm text-neutral-400 dark:text-neutral-400 hover:underline' key={item.length}>#{item}</p>
                                 </Link>
                             ))}
                         </div>

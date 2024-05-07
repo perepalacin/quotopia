@@ -27,7 +27,9 @@ export async function GET (
                 break;
 
             case "Topics":
-                quotes = await Quote.find({ topics: query }).sort({lastedit: 'desc'});
+                quotes = await Quote.find(
+                    {topics: {"$regex": query, "$options": "i"}}
+                ).sort({lastedit: 'desc'});
                 break;
         
             default: //else

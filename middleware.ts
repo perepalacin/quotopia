@@ -8,8 +8,10 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 //   if (isProtectedRoute(req)) auth().protect();
 // });
 
-export default clerkMiddleware();
+export default clerkMiddleware()
 
 export const config = {
-  matcher: ["/((?!.+.[w]+$|_next).*)", "/", "/(api|trpc)(.*)", "/create"],
+  // The following matcher runs middleware on all routes
+  // except static assets.
+  matcher: [ '/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 };

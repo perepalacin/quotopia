@@ -40,7 +40,7 @@ const Sidebar = () => {
                 <ModeToggle />
                 {userId ? 
                 <div className="flex flex-row gap-2 justify-center">
-                    <Link href={"/create"}>
+                    <Link href={"/create/new"}>
                         <Button variant={"mainaccent"}>
                             Post a new quote
                         </Button>

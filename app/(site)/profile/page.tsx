@@ -1,7 +1,7 @@
 import { ContentSkeleton } from "@/components/ui/ContentSkeleton";
 import PageContent from "@/components/ui/PageContent";
 import SearchBar from "@/components/ui/SearchBar";
-import { QuoteProps } from "@/types/types_d";
+import { QuoteProps, QuotesPath } from "@/types/types_d";
 import { auth } from "@clerk/nextjs/server";
 import axios from "axios";
 import { redirect } from "next/navigation";
@@ -26,7 +26,7 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
   if (searchParams.category && searchParams.query) {
     await axios
       .get(
-        `http://localhost:3000/api/feed/${searchParams.query}/${searchParams.category}
+        `http://localhost:3000/api/profile/${userId}/${searchParams.query}/${searchParams.category}
   `
       )
       .then((response) => {
@@ -56,7 +56,7 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
         <SearchBar />
       </div>
       <Suspense fallback={<ContentSkeleton />}>
-        <PageContent quotes={quotes}/>
+        <PageContent quotes={quotes} path={QuotesPath.profile}/>
       </Suspense>
     </div>
   );

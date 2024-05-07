@@ -2,7 +2,7 @@ import HeroQuoteItem from "@/components/ui/HeroQuoteItem";
 import PageContent from "@/components/ui/PageContent";
 import ShowMoreButton from "@/components/ui/ShowMoreButton";
 import { Separator } from "@/components/ui/separator";
-import { QuoteProps } from "@/types/types_d";
+import { QuoteProps, QuotesPath } from "@/types/types_d";
 import axios from "axios";
 
 interface QuotePageProps {
@@ -18,7 +18,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
     var quote: QuoteProps = {
         author: "",
         creator: "",
-        topics: ["1", "2"],
+        topics: [],
         quote: "",
         lastedit: new Date(),
         _id: "1",
@@ -32,7 +32,8 @@ const page = async ({searchParams, params}: QuotePageProps) => {
       quote = response.data;
     })
     .catch((error) => {
-      console.log("Error failed to fetch feed data:" + error);
+      console.log("Error failed to fetch quote data:" + error);
+      throw new Error('Quote not found');
     });
 
     if (searchParams.relatedContent === "true") {
@@ -42,7 +43,8 @@ const page = async ({searchParams, params}: QuotePageProps) => {
       relatedContent = response.data;
     })
     .catch((error) => {
-      console.log("Error failed to fetch feed data:" + error);
+      console.log("Failed to fetch quote data " + error);
+      throw new Error('Author not found');
     });
     }
 
@@ -60,7 +62,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
           <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>
         }
         <Separator />
-        <PageContent quotes={relatedContent} />
+        <PageContent quotes={relatedContent} path={QuotesPath.feed}/>
       </div>
       }
     </div>

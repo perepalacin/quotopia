@@ -6,9 +6,10 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Button } from "./button";
 import { Loader2Icon, PlusIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { QuoteProps } from "@/types/types_d";
 
 
 const formSchema = z.object({
@@ -16,20 +17,37 @@ const formSchema = z.object({
     quote: z.string().min(4, {message: "The quote text should have at least four characters"}).max(500, {message: "Quote text can not exceed 500 characters"}),
 });
 
+interface UploadQuoteProps {
+    quote: QuoteProps | null;
+}
 
-const UploadQuoteForm = () => {
+
+const UploadQuoteForm = (props: UploadQuoteProps) => {
+
+    console.log(props.quote);
 
     const [topics, setTopics ] = useState<Array<[string, number]>>([]);
     const [topicInput, setTopicInput] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (props.quote?.topics) {
+            const topicsArray: Array<[string, number]> = [];
+            for (let i = 0; i < props.quote.topics.length; i++) {
+                topicsArray.push([String(props.quote.topics[i]), i]);
+            }
+            setTopics(topicsArray);
+            console.log(topicsArray);
+        }
+    }, []);
 
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            author: "",
-            quote: "",
+            author: String(props.quote?.author) || "",
+            quote: String(props.quote?.quote) || "",
         },
     });
 
@@ -45,27 +63,49 @@ const UploadQuoteForm = () => {
             topics: requestedTopics,
         };
         try {
-            fetch('/api/new', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-                return response.json();
-              })
-              .then(data => {
-                console.log(data);
-                toast.success("Quote uploaded succesfully", {id: "succesfullUpload"});
-                router.push(`/quote/${data._id}`);
-              })
-              .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-              });
+            if (!props.quote?._id) {
+                fetch('/api/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    toast.success("Quote uploaded succesfully", {id: "succesfullUpload"});
+                    router.push(`/quote/${data._id}`);
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+            } else {
+                fetch(`/api/new/${props.quote._id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    toast.success("Quote updated succesfully", {id: "succesfullUpdate"});
+                    router.push(`/quote/${data._id}`);
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+            }
               //We create the edit call too
             // } else {
             //   await axios.post(`/api/recipe`, formData, {
@@ -136,7 +176,7 @@ const UploadQuoteForm = () => {
                         type="search"
                         maxLength={100}
                         placeholder = "Nikola Tesla"
-                        className="w-full text-2xl border-2 font-semibold text-[#FFFFFF] rounded-sm px-2 py-2 [&::-webkit-search-cancel-button]:grayscale" 
+                        className="w-full text-2xl border-2 font-semibold rounded-sm px-2 py-2 [&::-webkit-search-cancel-button]:grayscale" 
                         {...field}
                         />
                 </FormControl>
@@ -199,9 +239,14 @@ const UploadQuoteForm = () => {
             <div className="w-full flex flex-row justify-end mt-2">
                 <Button type="submit" variant={"mainaccent"} className="w-44" disabled={isLoading}>
                     {isLoading ? (
-                        <Loader2Icon className="animate-spin w-4 h-4" />
+                        <Loader2Icon className="animate-spin w-4 h-4 mr-2" />
                     ) :
+                    <></>
+                    }
+                    { !props.quote?._id ?
                     <p>Post</p>
+                    :
+                    <p>Update</p>
                     }
                 </Button>
             </div>

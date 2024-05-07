@@ -1,7 +1,7 @@
 import { ContentSkeleton } from "@/components/ui/ContentSkeleton";
 import PageContent from "@/components/ui/PageContent";
 import SearchBar from "@/components/ui/SearchBar";
-import { QuoteProps } from "@/types/types_d";
+import { QuoteProps, QuotesPath } from "@/types/types_d";
 import axios from "axios";
 import { Suspense } from "react";
 
@@ -24,7 +24,7 @@ const page = async ({searchParams}: RootPageProps) => {
       console.log("Error failed to fetch feed data:" + error);
     });
   } else {
-    await axios.get(`http://localhost:3000//api/feed/`)
+    await axios.get(`http://localhost:3000/api/feed/`)
     .then((response) => {
       quotes = response.data;
     })
@@ -55,7 +55,7 @@ const page = async ({searchParams}: RootPageProps) => {
       {/* Landing Banner END*/}
       <SearchBar />
       <Suspense fallback={<ContentSkeleton />}>
-        <PageContent quotes={quotes}/>
+        <PageContent quotes={quotes} path={QuotesPath.feed}/>
       </Suspense>
     </div>
   );
