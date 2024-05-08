@@ -8,6 +8,7 @@ import axios from "axios";
 interface QuotePageProps {
   searchParams: {
     relatedContent: string;
+    page: string;
   }
   params: {
     id: string;
@@ -57,12 +58,13 @@ const page = async ({searchParams, params}: QuotePageProps) => {
       <div className="flex flex-col gap-2">
         {
           searchParams.relatedContent === "true" ?
-          <></>
+          <div>
+          <Separator />
+          <PageContent quotes={relatedContent} path={QuotesPath.feed} count={0}/>
+          </div>
           :
-          <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>
+            <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>
         }
-        <Separator />
-        <PageContent quotes={relatedContent} path={QuotesPath.feed}/>
       </div>
       }
     </div>

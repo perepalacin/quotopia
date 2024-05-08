@@ -27,6 +27,7 @@ const SearchBar = () => {
         if (categoryName) {
           setSearchCategory(categoryName);
           params.set("category", categoryName);
+          params.set("page", "1");
           if (query) {
             router.replace(`${pathname}?${params.toString()}`);
           }
@@ -38,15 +39,14 @@ const SearchBar = () => {
 
         const params = new URLSearchParams(searchParams);
 
+        params.set("page", "1");
         if (debouncedValue) {
-            params.set("query", debouncedValue);
-            params.set("category", searchCategory);
+          params.set("query", debouncedValue);
+          params.set("category", searchCategory);
         } else {
-            params.delete("query");
-            params.delete("category");
+          params.delete("query");
+          params.delete("category");
         }
-
-
         router.replace(`${pathname}?${params.toString()}`)
 
     }, [debouncedValue, router, category]);

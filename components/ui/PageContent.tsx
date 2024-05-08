@@ -1,19 +1,20 @@
 import { QuoteProps, QuotesPath } from "@/types/types_d";
 import QuoteItem from "./QuoteItem";
 import Image from "next/image";
-import { ContentSkeleton } from "./ContentSkeleton";
+import Pagination from "./Pagination";
 
 
 interface PageContentProps {
     quotes: QuoteProps[];
     path: QuotesPath;
+    count: number;
   }
 
 
-const PageContent = ({quotes, path}: PageContentProps) => {
+const PageContent = ({quotes, path, count}: PageContentProps) => {
 
 
-  console.log(quotes);
+
 
   if (quotes.length === 0) {
     return (
@@ -37,18 +38,21 @@ const PageContent = ({quotes, path}: PageContentProps) => {
     )
   }
   return (
-    <div className='columns-1 sm:columns-2 xl:columns-3 gap-4'>
-      <div className='grid'>
-          {quotes.map((quote: QuoteProps) => (
-            <QuoteItem
-              key={Number(quote._id)} 
-              data={quote}
-              path = {path}
-              
-              // user={user}
-            />
-          ))}
-        </div>
+    <div>  
+      <div className='columns-1 sm:columns-2 xl:columns-3 gap-4'>
+        <div className='grid'>
+            {quotes.map((quote: QuoteProps) => (
+              <QuoteItem
+                key={Number(quote._id)} 
+                data={quote}
+                path = {path}
+                
+                // user={user}
+                />
+              ))}
+          </div>
+      </div>
+      <Pagination count={count}/>
     </div>
   )
 }

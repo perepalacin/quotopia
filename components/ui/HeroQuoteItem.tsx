@@ -17,15 +17,6 @@ const HeroQuoteItem: React.FC<QuoteItemProps> = ({
                 </div>
             </div>
             <div className='flex flex-row gap-4 items-center'>
-                <div className='w-10 h-10 flex justify-center'>
-                    {/* <Image
-                    src={authorImagePath}
-                    alt="Author's Picture"
-                    width={40}
-                    height={40}
-                    className='object-cover rounded-full border-2 border-neutral-200 dark:border-neutral-700'
-                    /> */}
-                </div>
                     <div className='flex flex-col gap-1'>
                         <h1 className='font-bold text-2xl'>{quote.author}</h1>
                         <div className='flex flex-row gap-2'>

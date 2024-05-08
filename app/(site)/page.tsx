@@ -7,6 +7,7 @@ import { Suspense } from "react";
 
 interface RootPageProps {
     searchParams: {
+      page: string;
       category: string;
       query: string;
     }
@@ -14,19 +15,28 @@ interface RootPageProps {
 
 const page = async ({searchParams}: RootPageProps) => {
   var quotes: QuoteProps[] = [];
-  if (searchParams.category && searchParams.query) {
-    await axios.get(`http://localhost:3000/api/feed/${searchParams.query}/${searchParams.category}
+  var quotesCount = 0;
+  if (searchParams.category && searchParams.query && searchParams.page) {
+    await axios.get(`http://localhost:3000/api/feed/${searchParams.page}/${searchParams.query}/${searchParams.category}
     `)
     .then((response) => {
-      quotes = response.data;
+      quotes = response.data.quotes;
+      quotesCount = Number(response.data.quotesCount[0]);
     })
     .catch((error) => {
       console.log("Error failed to fetch feed data:" + error);
     });
   } else {
-    await axios.get(`http://localhost:3000/api/feed/`)
+    let apiEndpoint = "";
+    if (!searchParams.page) {
+      apiEndpoint = 'http://localhost:3000/api/main/0';
+    } else {
+      apiEndpoint = `http://localhost:3000/api/main/${searchParams.page}`;
+    }
+    await axios.get(apiEndpoint)
     .then((response) => {
-      quotes = response.data;
+      quotes = response.data.quotes;
+      quotesCount = Number(response.data.quotesCount[0]);
     })
     .catch((error) => {
       console.log("Error failed to fetch feed data:" + error);
@@ -55,7 +65,7 @@ const page = async ({searchParams}: RootPageProps) => {
       {/* Landing Banner END*/}
       <SearchBar />
       <Suspense fallback={<ContentSkeleton />}>
-        <PageContent quotes={quotes} path={QuotesPath.feed}/>
+        <PageContent quotes={quotes} path={QuotesPath.feed} count={quotesCount}/>
       </Suspense>
     </div>
   );

@@ -16,20 +16,6 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
         className="group break-inside-avoid-column h-auto max-w-full relative flex flex-col px-5 py-5 gap-4 border rounded-md shadow-md bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 mt-4 z-1 cursor-pointer"
       >
         <div className="flex flex-row gap-4 items-center">
-          {/* { data.authorPicture !== "none" ? 
-          <div className='w-10 h-10 flex justify-center'>
-          <Image
-          src={authorImagePath}
-          alt="Author's Picture"
-          width={40}
-          height={40}
-          className='object-cover rounded-full border-2 border-neutral-200 dark:border-neutral-700'
-          />
-          </div>
-          :
-          <></>
-        } */}
-
           <div className="flex flex-col gap-1">
             <h1 className="font-bold text-2xl">{data.author}</h1>
             <div className="flex flex-row gap-2">

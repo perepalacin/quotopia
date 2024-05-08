@@ -64,12 +64,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }
 ) {
   //We get the data!
-  console.log("Here");
   const { userId } = getAuth(req);
-  console.log(userId);
   
   const id = params.id;
-  console.log(id);
   if (!id) {
     return new Response("Missing quote ID to update", {status: 400});
   }

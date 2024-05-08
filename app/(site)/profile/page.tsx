@@ -9,6 +9,7 @@ import React, { Suspense } from "react";
 
 interface ProfilePageRoots {
   searchParams: {
+    page: string;
     category: string;
     query: string;
   };
@@ -18,28 +19,35 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
 
   const { userId } = auth();
 
+  
   if (!userId) {
     redirect("/");
   }
-
+  
+  const page = searchParams.page || "1";
+  
   var quotes: QuoteProps[] = [];
+  var quotesCount = 0;
   if (searchParams.category && searchParams.query) {
     await axios
       .get(
-        `http://localhost:3000/api/profile/${userId}/${searchParams.query}/${searchParams.category}
+        `http://localhost:3000/api/profile/${userId}/${page}/${searchParams.query}/${searchParams.category}
   `
       )
       .then((response) => {
-        quotes = response.data;
+        quotes = response.data.quotes;
+        quotesCount = response.data.quotesCount[0];
+
       })
       .catch((error) => {
         console.log("Error failed to fetch feed data:" + error);
       });
   } else {
     await axios
-      .get(`http://localhost:3000/api/profile/${userId}`)
+      .get(`http://localhost:3000/api/profile/${userId}/${page}`)
       .then((response) => {
-        quotes = response.data;
+        quotes = response.data.quotes;
+        quotesCount = response.data.quotesCount[0];
       })
       .catch((error) => {
         console.log("Error failed to fetch user uploaded quotes:" + error);
@@ -56,7 +64,7 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
         <SearchBar />
       </div>
       <Suspense fallback={<ContentSkeleton />}>
-        <PageContent quotes={quotes} path={QuotesPath.profile}/>
+        <PageContent quotes={quotes} path={QuotesPath.profile} count={quotesCount}/>
       </Suspense>
     </div>
   );

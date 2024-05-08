@@ -11,6 +11,7 @@ export async function GET (
         const author = params.data[0];
         const id = params.data[1];
         if (!author) return new Response("Author name is missing.", {status: 400});
+        if (!id) return new Response("Reference Id is missing.", {status: 400});
         const quotes = await Quote.find(
             {
                 $and: [
@@ -18,7 +19,7 @@ export async function GET (
                     {author: author}
                 ]
             }
-        ).sort({lastedit: 'desc'});
+        ).sort({lastedit: 'desc'}).limit(25);
         if (quotes.length === 0) return new Response("Failed to fetch realted quotes", { status: 404 });
 
         return new Response(JSON.stringify(quotes), { status: 200 })
