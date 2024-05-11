@@ -1,9 +1,11 @@
+import { ContentSkeleton } from "@/components/ui/ContentSkeleton";
 import HeroQuoteItem from "@/components/ui/HeroQuoteItem";
 import PageContent from "@/components/ui/PageContent";
 import ShowMoreButton from "@/components/ui/ShowMoreButton";
 import { Separator } from "@/components/ui/separator";
 import { QuoteProps, QuotesPath } from "@/types/types_d";
 import axios from "axios";
+import { Suspense } from "react";
 
 interface QuotePageProps {
   searchParams: {
@@ -38,7 +40,6 @@ const page = async ({searchParams, params}: QuotePageProps) => {
     });
 
     if (searchParams.relatedContent === "true") {
-      console.log(quote.author);
       await axios.get(`http://localhost:3000/api/author/authorquotes/${quote.author}/${quote._id}`)
     .then((response) => {
       relatedContent = response.data;
@@ -52,7 +53,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
   return (
     <div className="flex flex-col items-center gap-4">
       <HeroQuoteItem key={1} quote={quote} />
-      {relatedContent.length === 0 ?
+      {searchParams.relatedContent !== "true" ?
       <ShowMoreButton author={quote.author}/>
       :
       <div className="flex flex-col gap-2">
@@ -60,7 +61,9 @@ const page = async ({searchParams, params}: QuotePageProps) => {
           searchParams.relatedContent === "true" ?
           <div>
           <Separator />
-          <PageContent quotes={relatedContent} path={QuotesPath.feed} count={0}/>
+          <Suspense fallback={<ContentSkeleton />}>
+            <PageContent quotes={relatedContent} path={QuotesPath.feed} count={0}/>
+          </Suspense>
           </div>
           :
             <p className="text-center font-3xl font-semibold">More quotes by {quote.author}</p>

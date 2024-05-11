@@ -14,7 +14,7 @@ const SearchBar = () => {
     const query = searchParams.get("query");
 
     const [searchQuery, setSearchQuery] = useState(query || "");
-    const [searchCategory, setSearchCategory] = useState("Contents");
+    const [searchCategory, setSearchCategory] = useState(category || "Contents");
 
     const debouncedValue = useDebounce<string>(searchQuery, 500);
 

@@ -20,7 +20,7 @@ export async function GET (
                 ]
             }
         ).sort({lastedit: 'desc'}).limit(25);
-        if (quotes.length === 0) return new Response("Failed to fetch realted quotes", { status: 404 });
+        console.log(quotes);
 
         return new Response(JSON.stringify(quotes), { status: 200 })
 
