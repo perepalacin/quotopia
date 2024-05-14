@@ -28,17 +28,16 @@ const SaveButton = (props: SaveButtonProps) => {
           return response.json();
         })
         .then((data) => {
+          console.log(data);
           toast.success("Quote saved succesfully", {
             id: "succesfullUpdate",
           });
           setIsLoading(false);
           setSaved(true);
         })
-        .catch((error) => {
-          console.error(
-            "There was a problem with your fetch operation:",
-            error
-          );
+        .catch(() => {
+          toast.error("You already liked this quote", {id: "alreadyLiked"});
+          setIsLoading(false);
         });
     } catch (error) {
       toast.error("Something went wrong, please try again later", {

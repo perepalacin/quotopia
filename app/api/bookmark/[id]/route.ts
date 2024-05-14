@@ -36,9 +36,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       });
 
     if (alreadyLiked === 1) {
-        return new Response("Already Liked quote", { status: 400 });
+        console.log("Already liked!");
+        throw new Error("Already Liked quote");
     }
-    
+
     const updatedQuote = await Quote.findByIdAndUpdate(
         id, 
         {
