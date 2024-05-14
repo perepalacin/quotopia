@@ -26,7 +26,7 @@ const page = async ({params}: CreateQuotePage) => {
         quote: "",
         lastedit: new Date(),
         _id: "",
-        favs: 0,
+        favs: [],
     };
 
     const id = params.id;

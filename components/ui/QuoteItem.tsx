@@ -34,7 +34,7 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
       </Link>
       <div className="opacity-0 drop-shadow-md absolute right-2 top-6 flex flex-row gap-1.5 transition translate translate-x-1/4 group-hover:opacity-100 group-hover:translate-x-0 z-10">
         <div className="py-1.5 px-1.5 bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-600 dark:bg-neutral-700 rounded-sm">
-          {path === "feed" ? <SaveButton /> : <></>}
+          {path === "feed" ? <SaveButton quoteId = {data._id} /> : <></>}
           {path === "profile" ? (
             <Link href={`/create/${data._id}`}>
               <Pencil />
@@ -44,8 +44,8 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
           )}
           {path === "saved" ? (
             <div>
-              <Bookmark fill="white" className="block dark:hidden" />
-              <Bookmark fill="black" className="hidden dark:block" />
+              <Bookmark fill="black" className="block dark:hidden" />
+              <Bookmark fill="white" className="hidden dark:block" />
             </div>
           ) : (
             <></>

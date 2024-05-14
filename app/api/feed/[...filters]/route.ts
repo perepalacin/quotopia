@@ -47,15 +47,16 @@ export async function GET (
                 break;
 
             case "Topics":
-                quotes = await Quote.find({ topics: query }).sort({lastedit: 'desc'})
-                .skip(page * limit)
-                .limit(limit);
-                quotesCount = await Quote.countDocuments({ topics: query });
+                quotes = await Quote.find({ 
+                      topics: {"$regex": query, "$options": "i"}
+                  }).sort({lastedit: 'desc'})
+                  .skip(page*limit)
+                  .limit(limit);
+                quotesCount = await Quote.countDocuments({topics: {"$regex": query, "$options": "i"}});
                 break;
         
             default: //else
                 return new Response("Category to search for is missing.", {status: 400});
-                break;
         }
 
 

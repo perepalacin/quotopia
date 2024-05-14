@@ -1,4 +1,4 @@
-import {Schema, model, models} from "mongoose";
+import mongoose, {Schema, model, models, mongo} from "mongoose";
 
 const QuoteSchema = new Schema({
     creator:{
@@ -20,9 +20,9 @@ const QuoteSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    favs:{
-        type: Number,
-    }
+    favs: [{
+        type: String,
+    }]
     //Define the name of the collecion
 }, {collection: 'quotes'});
 

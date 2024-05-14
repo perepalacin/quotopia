@@ -25,7 +25,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
         quote: "",
         lastedit: new Date(),
         _id: "1",
-        favs: 0,
+        favs: [],
     };
     const id = params.id;
     var relatedContent: QuoteProps[] = [];

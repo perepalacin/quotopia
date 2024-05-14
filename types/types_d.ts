@@ -1,3 +1,4 @@
+
 export interface QuoteProps {
     _id: String;
     creator: String;
@@ -5,7 +6,7 @@ export interface QuoteProps {
     quote: String;
     topics: String[]
     lastedit: Date;
-    favs: Number
+    favs: String[];
 }
 
 export enum QuotesPath {

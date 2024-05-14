@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     const newQuote = new Quote({
       creator: userId,
       author: author,
-      favs: 0,
+      favs: [],
       lastedit: new Date(),
       quote: quote,
       topics: topics,
