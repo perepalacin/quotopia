@@ -31,7 +31,7 @@ const page = async ({ searchParams }: SavedPageProps) => {
   if (searchParams.category && searchParams.query) {
     await axios
       .get(
-        `${process.env.DEPLOYMENT_BASE_URL}/api/saved/${userId}/${page}/${searchParams.query}/${searchParams.category}
+        `${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/saved/${userId}/${page}/${searchParams.query}/${searchParams.category}
   `
       )
       .then((response) => {
@@ -44,7 +44,7 @@ const page = async ({ searchParams }: SavedPageProps) => {
       });
   } else {
     await axios
-      .get(`${process.env.DEPLOYMENT_BASE_URL}/api/saved/${userId}/${page}`)
+      .get(`${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/saved/${userId}/${page}`)
       .then((response) => {
         quotes = response.data.quotes;
         quotesCount = response.data.quotesCount[0];

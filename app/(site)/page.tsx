@@ -17,7 +17,7 @@ const page = async ({searchParams}: RootPageProps) => {
   var quotes: QuoteProps[] = [];
   var quotesCount = 0;
   if (searchParams.category && searchParams.query && searchParams.page) {
-    await axios.get(`${process.env.DEPLOYMENT_BASE_URL}/api/feed/${searchParams.page}/${searchParams.query}/${searchParams.category}
+    await axios.get(`${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/feed/${searchParams.page}/${searchParams.query}/${searchParams.category}
     `)
     .then((response) => {
       quotes = response.data.quotes;
@@ -29,9 +29,9 @@ const page = async ({searchParams}: RootPageProps) => {
   } else {
     let apiEndpoint = "";
     if (!searchParams.page) {
-      apiEndpoint = `${process.env.DEPLOYMENT_BASE_URL}/api/main/0`;
+      apiEndpoint = `${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/main/0`;
     } else {
-      apiEndpoint = `${process.env.DEPLOYMENT_BASE_URL}/api/main/${searchParams.page}`;
+      apiEndpoint = `${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/main/${searchParams.page}`;
     }
     await axios.get(apiEndpoint)
     .then((response) => {
