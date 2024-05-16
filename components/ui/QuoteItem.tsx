@@ -3,6 +3,7 @@ import { QuoteProps, QuotesPath } from "@/types/types_d";
 import Link from "next/link";
 import SaveButton from "./SaveButton";
 import DeleteQuoteButton from "./DeleteQuoteButton";
+import UnsaveButton from "./UnsaveButton";
 
 interface QuoteItemProps {
   data: QuoteProps;
@@ -19,10 +20,10 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
           <div className="flex flex-col gap-1">
             <h1 className="font-bold text-2xl">{data.author}</h1>
             <div className="flex flex-row gap-2">
-              {data.topics.map((item) => (
+              {data.topics.map((item, key) => (
                 <p
                   className="text-sm text-neutral-400 dark:text-neutral-400"
-                  key={item.length}
+                  key={key}
                 >
                   #{item}
                 </p>
@@ -44,8 +45,7 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
           )}
           {path === "saved" ? (
             <div>
-              <Bookmark fill="black" className="block dark:hidden" />
-              <Bookmark fill="white" className="hidden dark:block" />
+              <UnsaveButton quoteId={data._id}/>
             </div>
           ) : (
             <></>

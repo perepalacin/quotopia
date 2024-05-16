@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { QuoteProps } from "@/types/types_d";
+import useDebounce from "@/lib/hooks/useDebounce";
+import axios from "axios";
 
 
 const formSchema = z.object({
@@ -24,11 +26,11 @@ interface UploadQuoteProps {
 
 const UploadQuoteForm = (props: UploadQuoteProps) => {
 
-    console.log(props.quote);
-
     const [topics, setTopics ] = useState<Array<[string, number]>>([]);
     const [topicInput, setTopicInput] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
+
+    let debouncedValue = "";
 
     useEffect(() => {
         if (props.quote?.topics) {
@@ -37,7 +39,6 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
                 topicsArray.push([String(props.quote.topics[i]), i]);
             }
             setTopics(topicsArray);
-            console.log(topicsArray);
         }
     }, []);
 
@@ -52,16 +53,52 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        
         setIsLoading(true);
+        
+        let quote = values.quote.trim().replace(/['"]+/g, '').trim();
+        quote = quote.charAt(0).toUpperCase() + quote.slice(1);
+        let currentTopic = "";
+
         const requestedTopics = [];
         for (let i = 0; i < topics.length; i++ ) {
             requestedTopics.push(topics[i][0]);
         }
+        
+        let uppercase = true;
+        //Remove comas, wierd character spaces and add uppercases!
+        for (let i = 0; i < topicInput.length; i++) {
+            switch (topicInput[i]) {
+                case " ":
+                    uppercase = true;
+                    break;
+                case "'":
+                    break;
+                case '"':
+                    break;
+                case ",":
+                    requestedTopics.push(requestedTopics);
+                    currentTopic = "";
+                    uppercase = true;
+                    break;
+                default:
+                    if (uppercase === true) {
+                        currentTopic = currentTopic + topicInput[i].toUpperCase();
+                    } else {
+                        currentTopic = currentTopic + topicInput[i].toLowerCase();
+                    }
+                    uppercase = false
+                    if (i === topicInput.length -1) {
+                        requestedTopics.push(currentTopic);
+                    }
+        }
+        }
         const data = {
-            quote: values.quote,
+            quote: quote,
             author: values.author,
             topics: requestedTopics,
         };
+
         try {
             if (!props.quote?._id) {
                 fetch('/api/new', {
@@ -106,15 +143,6 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
                     console.error('There was a problem with your fetch operation:', error);
                 });
             }
-              //We create the edit call too
-            // } else {
-            //   await axios.post(`/api/recipe`, formData, {
-            //     headers: {
-            //       "Content-Type": "multipart/form-data",
-            //     },
-            //     data: formData,
-            //   });
-            // }
           } catch (error) {
             toast.error("Something went wrong, please try again later", {
               id: "quoteUpdateError",
@@ -125,38 +153,19 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
     }
 
     const handleTopicInputChange = (e: string) => {
+        debouncedValue = useDebounce<string>(e, 500);
         setTopicInput(e);
         return null;
     }
 
-    const handleAddTopic = () => {
-        if (!topicInput) {
-            toast.error("A topic can't be empty", {id: "emptyTopic"});
-            return null;
-        }
-        if (topics.length === 0) {
-            setTopics([[topicInput, 0]])
-        } else {
-            const topicsArray = topics;
-            topics.push([topicInput, topics.length]);
-            setTopics(topicsArray);
-            console.log(topicsArray);
-        }
-
-        setTopicInput("");
-        return null;
-    }
 
     const deleteTopic = (index: number) => {
-        console.log("Delete");
-        console.log(index);
         //We avoid mutatting the state by adding the spread operator in front
         const topicsArray = [...topics];        
         topicsArray.splice(index, 1);
         topicsArray.forEach((item, i) => {
             item[1] = i;
         });
-        console.log(topicsArray);
         setTopics(topicsArray);
         return null;
     }
@@ -227,14 +236,10 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
                 <p className="font-semibold">Topics:</p>
             <input
                 onChange={(event) => {handleTopicInputChange(event.target.value)}}
-                placeholder = "Science"
+                placeholder = "Science, Truth, Progress (hint: use commas to input multiple topics)"
                 value = {topicInput}
                 className="w-full border-2 rounded-sm px-2 py-2 [&::-webkit-search-cancel-button]:grayscale" 
                 />
-            <Button onClick={handleAddTopic} type="button" className="flex flex-row gap-2" variant={"outline"}>
-                <PlusIcon size={14}/>
-                Add topic
-            </Button>
             </div>
             <div className="w-full flex flex-row justify-end mt-2">
                 <Button type="submit" variant={"mainaccent"} className="w-44" disabled={isLoading}>

@@ -28,22 +28,22 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     await connectToDB();
 
-    const alreadyLiked = await Quote.countDocuments({
+    const notLiked = await Quote.countDocuments({
         $and: [
           {_id: id},
           {favs: userId}
       ]
       });
 
-    if (alreadyLiked === 1) {
-        console.log("Already liked!");
-        throw new Error("Already Liked quote");
+    if (notLiked === 0) {
+        console.log("This quote is not liked by this user!");
+        throw new Error("Not liked quote");
     }
 
     const updatedQuote = await Quote.findByIdAndUpdate(
         id, 
         {
-            $push: {favs: userId}
+            $pull: {favs: userId}
         });
 
     return new Response(JSON.stringify(updatedQuote), { status: 200 });

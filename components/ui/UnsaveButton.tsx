@@ -3,20 +3,22 @@ import { Bookmark, CheckIcon, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import UnsaveButton from "./UnsaveButton";
+import SaveButton from "./SaveButton";
 
-interface SaveButtonProps {
+interface UnsaveButtonProps {
   quoteId: String;
 }
 
-const SaveButton = (props: SaveButtonProps) => {
+const UnsaveButton = (props: UnsaveButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const handleQuoteSave = async () => {
+  const router = useRouter();
+
+  const handleQuoteUnsave = async () => {
     setIsLoading(true);
     try {
-      fetch(`/api/bookmark/${props.quoteId}`, {
+      fetch(`/api/unbookmark/${props.quoteId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -30,14 +32,15 @@ const SaveButton = (props: SaveButtonProps) => {
         })
         .then((data) => {
           console.log(data);
-          toast.success("Quote saved succesfully", {
+          toast.success("Quote unsaved succesfully", {
             id: "succesfullUpdate",
           });
           setIsLoading(false);
           setSaved(true);
+          router.refresh();
         })
         .catch(() => {
-          toast.error("You already liked this quote", {id: "alreadyLiked"});
+          toast.error("This quote is not in your liked list", {id: "notLiked"});
           setIsLoading(false);
         });
     } catch (error) {
@@ -56,9 +59,12 @@ const SaveButton = (props: SaveButtonProps) => {
       :
       <div>
         { saved ?
-        <UnsaveButton quoteId={props.quoteId} />
+        <SaveButton quoteId={props.quoteId} />
         :
-        <Bookmark onClick={handleQuoteSave} />
+        <div>
+            <Bookmark fill="black" className="block dark:hidden" onClick={handleQuoteUnsave}/>
+            <Bookmark fill="white" className="hidden dark:block" onClick={handleQuoteUnsave}/>
+        </div>
         }
       </div>
       }
@@ -66,4 +72,4 @@ const SaveButton = (props: SaveButtonProps) => {
   )
 };
 
-export default SaveButton;
+export default UnsaveButton;
