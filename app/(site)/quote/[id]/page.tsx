@@ -30,7 +30,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
     const id = params.id;
     var relatedContent: QuoteProps[] = [];
     console.log(id);
-    await axios.get(`http://localhost:3000/api/quotes/${id}`)
+    await axios.get(`${process.env.DEPLOYMENT_BASE_URL}/api/quotes/${id}`)
     .then((response) => {
       quote = response.data;
     })
@@ -40,7 +40,7 @@ const page = async ({searchParams, params}: QuotePageProps) => {
     });
 
     if (searchParams.relatedContent === "true") {
-      await axios.get(`http://localhost:3000/api/author/authorquotes/${quote.author}/${quote._id}`)
+      await axios.get(`${process.env.DEPLOYMENT_BASE_URL}/api/author/authorquotes/${quote.author}/${quote._id}`)
     .then((response) => {
       relatedContent = response.data;
     })

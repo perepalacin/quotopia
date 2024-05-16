@@ -31,7 +31,7 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
   if (searchParams.category && searchParams.query) {
     await axios
       .get(
-        `http://localhost:3000/api/profile/${userId}/${page}/${searchParams.query}/${searchParams.category}
+        `${process.env.DEPLOYMENT_BASE_URL}/api/profile/${userId}/${page}/${searchParams.query}/${searchParams.category}
   `
       )
       .then((response) => {
@@ -44,7 +44,7 @@ const page = async ({ searchParams }: ProfilePageRoots) => {
       });
   } else {
     await axios
-      .get(`http://localhost:3000/api/profile/${userId}/${page}`)
+      .get(`${process.env.DEPLOYMENT_BASE_URL}/api/profile/${userId}/${page}`)
       .then((response) => {
         quotes = response.data.quotes;
         quotesCount = response.data.quotesCount[0];

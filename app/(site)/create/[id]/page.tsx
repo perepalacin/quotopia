@@ -31,7 +31,7 @@ const page = async ({params}: CreateQuotePage) => {
 
     const id = params.id;
     if (id !== "new") {
-        await axios.get(`http://localhost:3000/api/quotes/${id}`)
+        await axios.get(`${process.env.DEPLOYMENT_BASE_URL}/api/quotes/${id}`)
         .then((response) => {
             quote = response.data;
             console.log(quote);
