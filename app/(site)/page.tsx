@@ -16,6 +16,7 @@ interface RootPageProps {
 const page = async ({searchParams}: RootPageProps) => {
   var quotes: QuoteProps[] = [];
   var quotesCount = 0;
+  console.log(`${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api`);
   if (searchParams.category && searchParams.query && searchParams.page) {
     await axios.get(`${process.env.NEXT_PUBLIC_DEPLOYMENT_BASE_URL}/api/feed/${searchParams.page}/${searchParams.query}/${searchParams.category}
     `)
