@@ -4,11 +4,11 @@ import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 import { isArrayOfStrings, isString } from "@/lib/utils/TypeChecker";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// };
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }
 ) {

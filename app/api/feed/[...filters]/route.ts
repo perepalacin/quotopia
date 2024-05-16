@@ -1,7 +1,6 @@
 import { connectToDB } from "@/lib/utils/mongoConnect";
 import Quote from "@/types/mongoModels";
 import { QuoteProps } from "@/types/types_d";
-import { skip } from "node:test";
 
 export async function GET (
     _req: Request,
@@ -15,7 +14,7 @@ export async function GET (
         const page = Number(params.filters[0]) - 1 || 0;
         const query = params.filters[1];
         const category = params.filters[2];
-        if (!query) return new Error("Query string is missing.");
+        if (!query) return new Response("Query string is missing.");
         if (isNaN(page) || page < 0) {
             throw new Error("Invalid pagination number");
         }

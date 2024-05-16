@@ -20,15 +20,15 @@ const HeroQuoteItem: React.FC<QuoteItemProps> = ({
                     <div className='flex flex-col gap-1'>
                         <h1 className='font-bold text-2xl'>{quote.author}</h1>
                         <div className='flex flex-row gap-2'>
-                            {quote.topics.map((item) => (
-                                <Link href = {`/?page=1&query=${item}&category=Topics`} className="">
+                            {quote.topics.map((item, index) => (
+                                <Link key={index} href = {`/?page=1&query=${item}&category=Topics`} className="">
                                     <p className='text-sm text-neutral-400 dark:text-neutral-400 hover:underline' key={item.length}>#{item}</p>
                                 </Link>
                             ))}
                         </div>
                     </div>
                 </div>
-                <p className='italic dark:text-neutral-200'>"{quote.quote}"</p>
+                <p className='italic dark:text-neutral-200'>&quot;{quote.quote}&quot;</p>
             </div>
         )
     }

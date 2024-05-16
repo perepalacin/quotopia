@@ -36,9 +36,7 @@ const SearchBar = () => {
 
 
     useEffect(() => {
-
         const params = new URLSearchParams(searchParams);
-
         params.set("page", "1");
         if (debouncedValue) {
           params.set("query", debouncedValue);
@@ -48,7 +46,6 @@ const SearchBar = () => {
           params.delete("category");
         }
         router.replace(`${pathname}?${params.toString()}`)
-
     }, [debouncedValue, router, category]);
 
 

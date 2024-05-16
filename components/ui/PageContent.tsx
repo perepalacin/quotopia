@@ -23,15 +23,15 @@ const PageContent = ({quotes, path, count}: PageContentProps) => {
         <div className="flex flex-col gap-2 items-center">
           <Image src={"/images/EmptyLight.png"} width={250} height={250} alt="Image of a thinker" className="dark:hidden w-44"/>
           <Image src={"/images/EmptyDark.png"} width={250} height={250} alt="Image of a thinker" className="hidden dark:block w-44"/>
-          <p className="font-bold text-2xl text-center text-indigo-500">Sorry, it's not you, it's us</p>
+          <p className="font-bold text-2xl text-center text-indigo-500">Sorry, it&apos;s not you, it&apos;s us</p>
           <p className="font-bold text-2xl text-center">we do not have any content that matches your search</p>
         </div>
       :
         <div className="flex flex-col gap-2 items-center">
           <Image src={"/images/Empty2Light.png"} width={250} height={250} alt="Image of a thinker" className="dark:hidden w-44"/>
           <Image src={"/images/Empty2Dark.png"} width={250} height={250} alt="Image of a thinker" className="hidden dark:block w-44"/>
-          <p className="font-bold text-2xl text-center text-indigo-500">You haven't posted anything yet</p>
-          <p className="font-semibold text-2xl text-center italic">“The journey of a thousand miles begins with one step.”</p>
+          <p className="font-bold text-2xl text-center text-indigo-500">You haven&apos;t posted anything yet</p>
+          <p className="font-semibold text-2xl text-center italic">&quot;The journey of a thousand miles begins with one step.&quot;</p>
         </div>
       }
       </div>

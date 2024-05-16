@@ -153,7 +153,6 @@ const UploadQuoteForm = (props: UploadQuoteProps) => {
     }
 
     const handleTopicInputChange = (e: string) => {
-        debouncedValue = useDebounce<string>(e, 500);
         setTopicInput(e);
         return null;
     }
