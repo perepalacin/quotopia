@@ -33,7 +33,7 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
         </div>
         <p className="italic dark:text-neutral-200">&quot;{data.quote}&quot;</p>
       </Link>
-      <div className="opacity-0 drop-shadow-md absolute right-2 top-6 flex flex-row gap-1.5 transition translate translate-x-1/4 group-hover:opacity-100 group-hover:translate-x-0 z-10">
+      <div className="lg:opacity-0 drop-shadow-md absolute right-2 top-6 flex flex-row gap-1.5 lg:transition lg:translate lg:translate-x-1/4 lg:group-hover:opacity-100 lg:group-hover:translate-x-0 z-10">
         <div className="py-1.5 px-1.5 bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-600 dark:bg-neutral-700 rounded-sm">
           {path === "feed" ? <SaveButton quoteId = {data._id} /> : <></>}
           {path === "profile" ? (
@@ -52,7 +52,7 @@ const QuoteItem: React.FC<QuoteItemProps> = ({ data, path }) => {
           )}
         </div>
         {path === "profile" ? (
-          <div className="opacity-0 drop-shadow-md absolute right-12 top-0 flex flex-row gap-1.5 transition translate translate-x-1/4 group-hover:opacity-100 group-hover:translate-x-0 z-10">
+          <div className="lg:opacity-0 drop-shadow-md absolute right-12 top-0 flex flex-row gap-1.5 lg:transition lg:translate lg:translate-x-1/4 lg:group-hover:opacity-100 lg:group-hover:translate-x-0 z-10">
               <DeleteQuoteButton id={data._id}/>
           </div>
         ) : (
